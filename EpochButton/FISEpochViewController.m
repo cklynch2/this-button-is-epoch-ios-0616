@@ -30,9 +30,22 @@
 }
 
 - (IBAction)epochButton:(id)sender {
-    CGFloat epochDate = [self epochMethod];
-    NSString *epochDateDisplay = [NSString stringWithFormat:@"%f", epochDate];
+    NSString *epochDateDisplay = [NSString stringWithFormat:@"%@ \nThis does not account for Leap Years! Ugh", [self convertUnixSecondsToYearsDaysHoursSeconds]];
     self.epochLabel.text = epochDateDisplay;
+}
+
+- (NSString *)convertUnixSecondsToYearsDaysHoursSeconds {
+    CGFloat epochDate = [self epochMethod];
+    NSUInteger epochDateInt = (NSUInteger) (floor(epochDate));
+    NSUInteger years = epochDateInt/31536000;
+    NSUInteger secondsAfterDividingOutYears = epochDateInt % 31536000;
+    NSUInteger days = secondsAfterDividingOutYears/86400;
+    NSUInteger secondsAfterDividingOutDays = secondsAfterDividingOutYears % 86400;
+    NSUInteger hours = secondsAfterDividingOutDays/3600;
+    NSUInteger secondsAfterDividingOutHours = secondsAfterDividingOutDays % 3600;
+    NSUInteger minutes = secondsAfterDividingOutHours/60;
+    NSUInteger secondsAfterDividingOutMinutes = secondsAfterDividingOutHours % 60;
+    return [NSString stringWithFormat:@"Years: %lu | Days: %lu | Hours: %lu\ngit Minutes: %lu | Seconds: %lu", years, days, hours, minutes, secondsAfterDividingOutMinutes];
 }
 
 /*
